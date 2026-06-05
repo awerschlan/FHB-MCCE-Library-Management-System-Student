@@ -70,6 +70,40 @@ The server starts on **http://localhost:3000**.
 
 ---
 
+## End-to-end testing (Playwright)
+
+The `playwright/` directory contains browser-based E2E tests for the web UI. The server must be running before you execute them.
+
+```bash
+# From the project root — start the app (in one terminal)
+npm run seed
+npm start
+
+# In a second terminal — set up and run Playwright
+cd playwright
+npm install
+npx playwright install
+npx playwright test
+```
+
+After a test run, open the HTML report with:
+
+```bash
+npx playwright show-report
+```
+
+Current specs in `playwright/tests/books.spec.js`:
+
+| Test | What it verifies |
+|------|------------------|
+| `books list displays seeded data` | The books table loads with more than 50 rows after seeding |
+| `add a book via the form and verify it appears in the list` | The add-book form accepts input, shows a success message, and the new book appears in the list |
+| `clicking a book row opens the detail page` | Clicking a row navigates to the book detail view |
+
+Playwright is configured in `playwright/playwright.config.js` with `baseURL` set to `http://localhost:3000` and HTML reporting enabled. Test artifacts (`playwright-report/`, `test-results/`) are gitignored.
+
+---
+
 ## Seed data
 
 The seed script populates the database with realistic example data:
@@ -169,6 +203,11 @@ It describes your group's assigned domain, the business rules you must cover, an
 │   └── app.js              # Frontend JavaScript
 ├── docs/
 │   └── FHB-MCCE-Group-Assignment.docx
+├── playwright/
+│   ├── playwright.config.js
+│   ├── package.json
+│   └── tests/
+│       └── books.spec.js   # E2E tests for the books UI
 ├── seed.js                 # Database seeding script
 └── package.json
 ```
